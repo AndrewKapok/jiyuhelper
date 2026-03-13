@@ -1,20 +1,34 @@
 cmake_minimum_required(VERSION 3.10)
-project(MemoryErasure)
+project(jiyukiller)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Os -s -O3 -fno-exceptions -fno-rtti -ffunction-sections -fdata-sections -fmerge-all-constants -fno-stack-protector -mconsole")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(MemoryErasure MemoryErasure.cpp)
+option(BUILD_JIYUUDPATTACK "Build JiyuUdpAttack project" ON)
 
-target_link_libraries(MemoryErasure kernel32 psapi)
+add_subdirectory(MemoryErasure)
 
-find_program(UPX_EXECUTABLE upx)
-if(UPX_EXECUTABLE)
-    add_custom_command(TARGET MemoryErasure POST_BUILD
-        COMMAND ${UPX_EXECUTABLE} --best --overlay=strip --force $<TARGET_FILE:MemoryErasure> || exit 0
-        COMMENT "Compressing executable with UPX..."
-        VERBATIM
-    )
-else()
-    message(WARNING "UPX not found, skipping compression")
+if(BUILD_JIYUUDPATTACK)
+    add_subdirectory(JiyuUdpAttack)
 endif()
+
+add_custom_target(clean_juyuudpattack
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/JiyuUdpAttack/CMakeFiles
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/JiyuUdpAttack/juyuudpattack_autogen
+    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/JiyuUdpAttack/cmake_install.cmake
+    COMMENT "Cleaning up JiyuUdpAttack build files..."
+)
+
+add_custom_target(clean_memoryerasure
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/MemoryErasure/CMakeFiles
+    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/MemoryErasure/cmake_install.cmake
+    COMMENT "Cleaning up MemoryErasure build files..."
+)
+
+add_custom_target(clean_all
+    COMMENT "Cleaning up all unnecessary build files..."
+)
+if(BUILD_JIYUUDPATTACK)
+    add_dependencies(clean_all clean_juyuudpattack)
+endif()
+add_dependencies(clean_all clean_memoryerasure)
