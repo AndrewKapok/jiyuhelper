@@ -30,7 +30,8 @@ jobs:
           aqt install-qt windows desktop 6.10.2 win64_mingw81 -O ${{ github.workspace }}\Qt
           aqt install-tool windows desktop tools_mingw qt.tools.win64_mingw810 -O ${{ github.workspace }}\Qt
           echo "Qt6_DIR=${{ github.workspace }}\Qt\6.10.2\mingw81_64" >> $env:GITHUB_ENV
-          echo "PATH=${{ github.workspace }}\Qt\6.10.2\mingw81_64\bin;${{ github.workspace }}\Qt\Tools\mingw810_64\bin;$env:PATH" >> $env:GITHUB_ENV
+          "${{ github.workspace }}\Qt\6.10.2\mingw81_64\bin" >> $env:GITHUB_PATH
+          "${{ github.workspace }}\Qt\Tools\mingw810_64\bin" >> $env:GITHUB_PATH
 
       - name: install UPX
         run: | 
@@ -38,8 +39,8 @@ jobs:
                expand-archive -Path upx.zip -DestinationPath upx -Force
                $upxDir = Get-ChildItem -Path upx -Directory | Select-Object -First 1
                $upxPath = $upxDir.FullName
-               echo "PATH=$upxPath;$env:PATH" >> $env:GITHUB_ENV
-               upx --version
+               echo "UPX_PATH=$upxPath" >> $env:GITHUB_ENV
+               echo "$upxPath" >> $env:GITHUB_PATH
       
       - name: Build
         run: |
