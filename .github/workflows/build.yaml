@@ -42,11 +42,13 @@ jobs:
                echo "UPX_PATH=$upxPath" >> $env:GITHUB_ENV
                echo "$upxPath" >> $env:GITHUB_PATH
       
+
       - name: Build
         run: |
+               upx --version
                mkdir build
                cd build
-               cmake ..
+               cmake .. -DUPX_EXECUTABLE="${{ env.UPX_PATH }}\upx.exe"
                cmake --build .
 
       - name: Package and Clean
