@@ -29,7 +29,10 @@ jobs:
         run: |
           aqt install-qt windows desktop 6.10.2 win64_mingw81 -O ${{ github.workspace }}\Qt
           aqt install-tool windows desktop tools_mingw qt.tools.win64_mingw810 -O ${{ github.workspace }}\Qt
-          echo "Qt6_DIR=${{ github.workspace }}\Qt\6.10.2\mingw81_64" >> $env:GITHUB_ENV
+          $qtPath = "${{ github.workspace }}\Qt\6.10.2\mingw81_64"
+          $qtPathForward = $qtPath -replace "\\", "/"
+          echo "Qt6_DIR=$qtPathForward" >> $env:GITHUB_ENV
+          echo "CMAKE_PREFIX_PATH=$qtPathForward" >> $env:GITHUB_ENV
           "${{ github.workspace }}\Qt\6.10.2\mingw81_64\bin" >> $env:GITHUB_PATH
           "${{ github.workspace }}\Qt\Tools\mingw810_64\bin" >> $env:GITHUB_PATH
 
@@ -50,7 +53,7 @@ jobs:
         run: |
                mkdir build
                cd build
-               cmake .. -G "MinGW Makefiles" -DQt6_DIR="${{ env.Qt6_DIR }}" -DUPX_EXECUTABLE="${{ env.UPX_PATH }}\upx.exe"
+               cmake .. -G "MinGW Makefiles" -DCMAKE_PREFIX_PATH="${{ env.CMAKE_PREFIX_PATH }}" -DUPX_EXECUTABLE="${{ env.UPX_PATH }}\upx.exe"
                cmake --build .
 
       - name: Package and Clean
