@@ -27,10 +27,10 @@ jobs:
 
       - name: Install Qt and MinGW
         run: |
-          aqt install-qt windows desktop 6.10.2 win64_mingw1310 -O ${{ github.workspace }}\Qt
-          aqt install-tool windows desktop tools_mingw qt.tools.win64_mingw1310 -O ${{ github.workspace }}\Qt
-          echo "Qt6_DIR=${{ github.workspace }}\Qt\6.10.2\mingw1310_64" >> $env:GITHUB_ENV
-          echo "PATH=${{ github.workspace }}\Qt\6.10.2\mingw1310_64\bin;${{ github.workspace }}\Qt\Tools\mingw1310_64\bin;$env:PATH" >> $env:GITHUB_ENV
+          aqt install-qt windows desktop 6.10.2 win64_mingw81 -O ${{ github.workspace }}\Qt
+          aqt install-tool windows desktop tools_mingw qt.tools.win64_mingw810 -O ${{ github.workspace }}\Qt
+          echo "Qt6_DIR=${{ github.workspace }}\Qt\6.10.2\mingw81_64" >> $env:GITHUB_ENV
+          echo "PATH=${{ github.workspace }}\Qt\6.10.2\mingw81_64\bin;${{ github.workspace }}\Qt\Tools\mingw810_64\bin;$env:PATH" >> $env:GITHUB_ENV
 
       - name: install UPX
         run: | 
