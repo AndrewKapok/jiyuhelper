@@ -4,26 +4,31 @@
 
 ## 项目架构
 
-目前只有一个文件，可以用来杀掉极域，双击运行即可
+1. [memoryerase](#memoryerasure)
+2. [jiyuUdpAttack](#jiyuudpattack)
+### MemoryErasure
+这个项目可以自动杀掉极域机房小助手，采用内存覆写的方法，拥有极小的体积。
 
-## 下载
+将此文件下载后双击运行即可
+
+#### 下载
 
 - [64 位版本](https://github.com/andrewkapok/jiyuhelper/releases/latest/download/MemoryErasure-win64.exe)
 - [32 位版本](https://github.com/andrewkapok/jiyuhelper/releases/latest/download/MemoryErasure-win32.exe)
 
-## 使用方法
-
-1. 下载对应架构的版本
-3. 程序会自动查找并终止 StudentMain.exe 进程
-
-## 构建
+#### 编译
 
 ```bash
+cd MemoryErasure
 mkdir build && cd build
 cmake .. -G "MinGW Makefiles"
 cmake --build .
 ```
 
-## 许可证
+### JiyuUdpAttack
 
-MIT License
+这个项目是使用qt重写的[ht0Ruial/Jiyu_udp_attack](https://github.com/ht0Ruial/Jiyu_udp_attack)
+
+出于某种原因，这个项目需要一些额外的库，因此体积较大
+
+在极域的一些较新的版本中，极域的学生端会验证udp包的安装地址。因此，在一些较新的机房中，本程序可能无法产生预期的效果
