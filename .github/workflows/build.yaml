@@ -25,16 +25,21 @@ jobs:
       - name: Install aqtinstall
         run: pip install aqtinstall
 
-      - name: Install Qt and MinGW
+      - name: Install Qt
         run: |
           aqt install-qt windows desktop 6.10.2 win64_mingw -O C:\Qt
-          aqt install-tool windows desktop tools_mingw qt.tools.win64_mingw810 -O C:\Qt
           $qtPath = "C:\Qt\6.10.2\mingw_64"
           $qtPathForward = $qtPath -replace "\\", "/"
           echo "Qt6_DIR=$qtPathForward" >> $env:GITHUB_ENV
           echo "CMAKE_PREFIX_PATH=$qtPathForward" >> $env:GITHUB_ENV
           "C:\Qt\6.10.2\mingw_64\bin" >> $env:GITHUB_PATH
-          "C:\Qt\Tools\mingw810_64\bin" >> $env:GITHUB_PATH
+
+      - name: Install MinGW 13.1.0
+        run: |
+          iwr -Uri "https://github.com/brechtsanders/winlibs_mingw/releases/download/13.1.0-16.0.5-11.0.0-ucrt-r5/winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64ucrt-11.0.0-r5.zip" -OutFile mingw.zip
+          expand-archive -Path mingw.zip -DestinationPath C:\mingw -Force
+          "C:\mingw\mingw64\bin" >> $env:GITHUB_PATH
+          echo "MinGW_DIR=C:\mingw\mingw64" >> $env:GITHUB_ENV
 
       - name: install UPX
         run: | 
